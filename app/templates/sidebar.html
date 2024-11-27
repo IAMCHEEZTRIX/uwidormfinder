@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Dashboard | UWIDormFinder</title>
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4 class="text-center">UWIDormFinder</h4>
+        <hr>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+            
+            <!-- Conditional rendering based on usertype -->
+            {% if session['usertype'] == 'student' %}
+                <a class="nav-link" href="{{ url_for('main.room_search') }}">Room Search</a>
+                <a class="nav-link" href="{{ url_for('main.view_booking') }}">View Booking</a>
+                <a class="nav-link" href="{{ url_for('main.track_application') }}">Track Application</a>
+            {% elif session['usertype'] == 'IT' %}
+                <a class="nav-link" href="{{ url_for('main.create_admin') }}">Create Admin Account</a>
+                <a class="nav-link" href="{{ url_for('main.system_log') }}">System Log</a>
+            {% endif %}
+        </nav>
+        <div class="profile">
+            <div class="dropdown">
+                <img src="https://via.placeholder.com/50" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false" alt="User Profile">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                    <li><a class="dropdown-item" href="#">Profile Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ url_for('main.logout') }}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    {% block content %}
+    
+    
+    {% endblock content %}
+</div>
+    
+    <!-- Bootstrap 5 JS (Optional for Dropdowns) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    {% endblock body %}
+    

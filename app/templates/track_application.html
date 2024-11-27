@@ -1,0 +1,121 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h3 class="mb-4 text-center">Application Progress</h3>
+    
+    {% if applications_with_rooms %}
+        {% for item in applications_with_rooms %}
+            {% set application = item.application %}
+            {% set room = item.room %}
+            
+            <!-- Room Details -->
+            <div class="card mb-3">
+                <div class="row g-0">
+                    {% if room %}
+                        <div class="col-md-4">
+                            <img src="{{ url_for('static', filename=room.image_url) }}" class="img-fluid rounded-start" alt="Room Image">
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ room.room_type.title() ~ " Room in Building " ~ room.building ~ " - Floor Level " ~ room.floor_number }}
+                                </h5>
+                                <p class="card-text">{{ room.description }}</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-md-12">
+                            <p class="text-muted">No room associated with this application.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Application Progress -->
+            <!-- Application Progress -->
+            <div class="timeline position-relative mb-5">
+                {% set statuses = ['Pending', 'Application Approved', 'Payment Under Review', 'Room Booked'] %}
+                {% for index, step_status in enumerate(statuses) %}
+                    <div class="timeline-step d-flex align-items-center mb-4 position-relative">
+                        <!-- Line between steps -->
+                        {% if index > 0 %}
+                            <div 
+                                class="timeline-line position-relative" 
+                                style="
+                                    width: 3px; 
+                                    height: 80px; 
+                                    left: 25px; 
+                                    top: -60px; 
+                                    background-color: {% if statuses.index(application.status) >= index %} green {% else %} lightgray {% endif %};
+                                ">
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Process Point -->
+                        <div 
+                            class="timeline-icon rounded-circle d-flex align-items-center justify-content-center 
+                            {% if statuses.index(application.status) >= index %} 
+                                bg-{{ ['primary', 'warning', 'info', 'success'][index] }} text-white 
+                            {% else %} 
+                                bg-light text-muted 
+                            {% endif %}" 
+                            style="width: 50px; height: 50px; position: relative; z-index: 9999;">
+                            <i class="
+                                {% if step_status == 'Pending' %}fas fa-file-alt{% endif %}
+                                {% if step_status == 'Application Approved' %}fas fa-check-circle{% endif %}
+                                {% if step_status == 'Payment Under Review' %}fas fa-receipt{% endif %}
+                                {% if step_status == 'Room Booked' %}fas fa-key{% endif %}
+                             "></i>
+                        </div>
+                        <!-- Process Content -->
+                        <div class="ms-3">
+                            <h5 class="fw-bold 
+                            {% if statuses.index(application.status) >= index %} 
+                                text-dark 
+                            {% else %} 
+                                text-muted 
+                            {% endif %}">
+                                {{ step_status }}
+                            </h5>
+                            <p class="{% if statuses.index(application.status) >= index %} text-muted {% else %} text-muted {% endif %}">
+                                {% if step_status == 'Pending' %}
+                                    We have received your application and it is currently being reviewed.
+                                {% elif step_status == 'Application Approved' %}
+                                    Your application has been approved. Please make payment and Upload the payment receipt 
+                                    <form action="{{ url_for('main.upload_receipt', application_id=application.id) }}" method="POST" enctype="multipart/form-data">
+                                        <div class="input-group mt-2">
+                                            <input type="file" name="receipt" accept=".pdf, .jpg, .png" class="form-control" required>
+                                            <button type="submit" class="btn {% if statuses.index(application.status) < statuses.index('Application Approved') %}btn-secondary disabled{% else %}btn-success{% endif %}">Upload Receipt</button>
+                                        </div>
+                                        
+                                        <!-- Display specific flash message for the application -->
+                                        {% with messages = get_flashed_messages(with_categories=true) %}
+                                            {% if messages %}
+                                                {% for category, message in messages %}
+                                                    {% if category == 'success_' ~ application.id %}
+                                                        <div class="alert alert-success mt-2">{{ message }}</div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% endwith %}
+
+                                    </form>
+                                {% elif step_status == 'Payment Under Review' %}
+                                    Your payment receipt is being reviewed.
+                                {% elif step_status == 'Room Booked' %}
+                                    Your room has been successfully booked.
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center">No applications found.</p>
+    {% endif %}
+</div>
+
+{% endblock content %}

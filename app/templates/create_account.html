@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+<title>Create Account | UWIDormFinder</title>
+<link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="login-card">
+    <h2 class="text-center mb-4">Create an Account</h2>
+    <form method="POST" action="{{ url_for('main.create_account') }}" novalidate>
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="first_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="last_name" required>
+        </div>
+        <div class="mb-3">
+            <label for="studentID" class="form-label">Student ID</label>
+            <input type="text" class="form-control" id="studentID" name="student_id" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Create Account</button>
+    </form>
+    <p class="text-center mt-3">
+        <a href="{{ url_for('main.login') }}" class="text-decoration-none">Back to Login</a>
+    </p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-3">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+</div>
+{% endblock body %}
