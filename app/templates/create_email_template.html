@@ -1,0 +1,84 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<div class="content p-4 mx-auto" style="width: 50%; max-width: 1200px;">
+    <h1 class="mb-4 text-center">Create or Edit Email Template</h1>
+    <form method="POST" action="{{ url_for('main.create_email_template') }}">
+        <!-- Status Dropdown -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Application Status</label>
+            <select class="form-select" name="status" id="status" >
+                <option value="Pending">Pending</option>
+                <option value="Application Approved">Application Approved</option>
+                <option value="Payment Under Review">Payment Under Review</option>
+                <option value="Payment is Approved">Payment is Approved</option>
+                <option value="Book Room">Book Room</option>
+            </select>
+
+            {% if errors.status %}
+                <div class="text-danger">{{ errors.status }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Subject Input -->
+        <div class="mb-3">
+            <label for="subject" class="form-label">Email Subject</label>
+            <input type="text" class="form-control" name="subject" id="subject" placeholder="Enter email subject" >
+        
+            {% if errors.subject %}
+                <div class="text-danger">{{ errors.subject }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Body Textarea -->
+        <div class="mb-3">
+            <label for="body" class="form-label">Email Body</label>
+            <textarea class="form-control" name="body" id="body" rows="10" placeholder="Enter email body" ></textarea>
+
+            {% if errors.body %}
+                <div class="text-danger">{{ errors.body }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-success">Add Template</button>
+        </div>
+    </form>
+
+    <!-- Applications Results -->
+    {% if templates %}
+        <div class="container mt-5">
+            <h3>Email Templates</h3>
+            {% for template in templates %}
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <!-- Text -->
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ " Email Template for " ~ template.status.title() ~ " status" }}</h5>
+                                <p class="card-text mt-3"><strong>Subject: </strong> {{template.subject}}</p>
+                                <p class="card-text"><strong>Email Body: </strong> {{template.body}}</p>
+                                
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <a href="{{ url_for('main.edit_template') }}" class="btn btn-warning">Edit Template</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    
+    {% else %}
+        <p>There is no Template at this moment!</p>
+
+    {% endif %}
+</div>
+
+{% endblock content %}
+
+
+

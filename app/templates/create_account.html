@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+<title>Create Account | UWIDormFinder</title>
+<link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="login-card">
+    <h2 class="text-center mb-4">Create an Account</h2>
+    <form method="POST" action="{{ url_for('main.create_account') }}" novalidate>
+        
+        <div class="mb-3">
+            <label for="studentID" class="form-label">Student ID</label>
+            <input type="text" class="form-control" id="studentID" name="student_id" value="{{ form_data.student_id if form_data else '' }}" required>
+            
+            {% if errors.student_id %}
+                <div class="text-danger">{{ errors.student_id }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="first_name" value="{{ form_data.first_name if form_data else '' }}" required>
+
+            {% if errors.first_name %}
+                <div class="text-danger">{{ errors.first_name }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="last_name" value="{{ form_data.last_name if form_data else '' }}" required>
+            
+            {% if errors.last_name %}
+                <div class="text-danger">{{ errors.last_name }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Middle Name -->
+        <div class="mb-3">
+            <label for="middleName" class="form-label">Middle Name</label>
+            <input type="text" class="form-control" id="middleName" name="middle_name" value="{{ form_data.middle_name if form_data else '' }}">
+        </div>
+
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ form_data.email if form_data else '' }}" required>
+        
+            {% if errors.email %}
+                <div class="text-danger">{{ errors.email }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Telephone -->
+        <div class="mb-3">
+            <label for="telephone" class="form-label">Telephone</label>
+            <input type="tel" class="form-control" id="telephone" name="telephone" value="{{ form_data.telephone if form_data else '' }}" >
+        
+            {% if errors.telephone %}
+                <div class="text-danger">{{ errors.telephone }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Gender -->
+        <div class="mb-3">
+            <label for="gender" class="form-label">Gender</label>
+            <select id="gender" name="gender" class="form-control" >
+                <option value="" disabled {% if not form_data.gender %}selected{% endif %}>Select Gender</option>
+                <option value="male" {% if form_data.gender == 'male' %}selected{% endif %}>Male</option>
+                <option value="female" {% if form_data.gender == 'female' %}selected{% endif %}>Female</option>
+                <option value="other" {% if form_data.gender == 'other' %}selected{% endif %}>Other</option>
+            </select>
+
+            {% if errors.gender %}
+                <div class="text-danger">{{ errors.gender }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+            
+            {% if errors.password %}
+                <div class="text-danger">{{ errors.password }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="confirmPassword" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="confirmPassword" name="confirm_password" required>
+            
+            {% if errors.confirm_password %}
+                <div class="text-danger">{{ errors.confirm_password }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-success w-100">Create Account</button>
+    </form>
+    <p class="text-center mt-3">
+        <a href="{{ url_for('main.login') }}" class="text-decoration-none">Back to Login</a>
+    </p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-3">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+</div>
+{% endblock body %}

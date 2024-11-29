@@ -1,0 +1,91 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+<!-- Main Content -->
+<div class="content p-4 mx-auto" style="width: 50%; max-width: 1200px;">
+    <h1 class="text-center mb-4">Create Admin Account</h1>
+    <form method="POST" action="/create_admin">
+
+        <!-- Admin ID -->
+        <div class="mb-3">
+            <label for="staffid" class="form-label">Staff ID</label>
+            <input type="text" class="form-control" id="staffid" name="staffid" value="{{ form_data.staffid if form_data else '' }}" placeholder="Enter your Staff ID" >
+            
+            {% if errors.staffid %}
+                <div class="text-danger">{{ errors.staffid }}</div>
+            {% endif %}
+        </div>
+
+        <!-- First Name -->
+        <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="first_name" value="{{ form_data.first_name if form_data else '' }}" placeholder="Enter Staff First Name" >
+            
+            {% if errors.first_name %}
+                <div class="text-danger">{{ errors.first_name }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Last Name -->
+        <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="last_name" value="{{ form_data.last_name if form_data else '' }}" placeholder="Enter staff Last Name" >
+        
+            {% if errors.last_name %}
+                <div class="text-danger">{{ errors.last_name }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Middle Name -->
+        <div class="mb-3">
+            <label for="middleName" class="form-label">Middle Name</label>
+            <input type="text" class="form-control" id="middleName" name="middle_name" value="{{ form_data.middle_name if form_data else '' }}" placeholder="Enter Staff Middle Name">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ form_data.email if form_data else '' }}" placeholder="Enter Staff Email" >
+        
+            {% if errors.email %}
+                <div class="text-danger">{{ errors.email }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Telephone -->
+        <div class="mb-3">
+            <label for="telephone" class="form-label">Telephone</label>
+            <input type="tel" class="form-control" id="telephone" name="telephone" value="{{ form_data.telephone if form_data else '' }}" placeholder="Enter Staff Telephone Number" >
+        
+            {% if errors.telephone %}
+                <div class="text-danger">{{ errors.telephone }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Gender -->
+        <div class="mb-3">
+            <label for="gender" class="form-label">Gender</label>
+            <select id="gender" name="gender" class="form-control" >
+                <option value="" disabled {% if not form_data.gender %}selected{% endif %}>Select Gender</option>
+                <option value="male" {% if form_data.gender == 'male' %}selected{% endif %}>Male</option>
+                <option value="female" {% if form_data.gender == 'female' %}selected{% endif %}>Female</option>
+                <option value="other" {% if form_data.gender == 'other' %}selected{% endif %}>Other</option>
+            </select>
+
+            {% if errors.gender %}
+                <div class="text-danger">{{ errors.gender }}</div>
+            {% endif %}
+        </div>
+
+        <!-- Buttons -->
+        <div class="d-flex justify-center mt-3">
+            <button type="submit" class="btn btn-success">Create Admin Account</button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock content %}
+
+
+

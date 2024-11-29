@@ -1,0 +1,40 @@
+{% extends "sidebar.html" %}
+
+    
+{% block content %}
+
+    <div class="container mt-5">
+        <h3>My Rooms Applications</h3>
+        {% if rooms %}
+            {% for room in rooms %}
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <!-- Image -->
+                        <div class="col-md-4">
+                            <img src="{{ url_for('static', filename=room.image_url) }}" class="img-fluid rounded-start" alt="Room Image">
+                        </div>
+                        <!-- Text -->
+                        <div class="col-md-8 d-flex align-items-center">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    {{ room.room_type.title() ~ " Rooms for Building " ~ room.building ~ " - Floor Level " ~ room.floor_number }}
+                                </h5>
+                                <p class="card-text">{{ room.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <small class="text-muted">Available: {{ room.available_rooms }}</small>
+                                    <div>
+                                        <a href="{{ url_for('main.book_room', room_id=room.id, action='edit') }}" class="btn btn-warning">Edit Booking</a>
+                                        <a href="{{ url_for('main.track_application', room_id=room.id) }}" class="btn btn-success">Track Application</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center mt-5">You have not booked any rooms yet.</p>
+        {% endif %}
+    </div>
+
+{% endblock content %}

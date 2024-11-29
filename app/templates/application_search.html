@@ -1,0 +1,97 @@
+{% extends "sidebar.html" %}
+
+{% block content %}
+    <!-- Main Content -->
+    <div class="content p-4 mx-auto" style="width: 50%; max-width: 1200px;">
+        <h1 class="text-center mb-4">Search for a Application</h1>
+        <form method="POST" action="/application_search">
+
+            <!-- Student ID -->
+            <div class="mb-3">
+                <label for="studentID" class="form-label">Student ID</label>
+                <input type="text" class="form-control" id="studentID" name="student_id" placeholder="Enter a Student ID">
+            </div>
+
+            <!-- Room Type -->
+            <div class="mb-3">
+                <label for="roomType" class="form-label">Room Type</label>
+                <select id="roomType" name="room_type" class="form-control">
+                    <option value="" disabled selected>Select Room Type</option>
+                    <option value="Single">Single</option>
+                    <option value="Double">Double</option>
+                    <option value="Suite">Disable</option>
+                </select>
+            </div>
+
+            <!-- Dormitory -->
+            <div class="mb-3">
+                <label for="dormitory" class="form-label">Dormitory Building</label>
+                <select id="dormitory" name="dormitory" class="form-control">
+                    <option value="" disabled selected>Select Dormitory</option>
+                    <option value="1">Building 1</option>
+                    <option value="2">Building 2</option>
+                    <option value="3">Building 3</option>
+                    <option value="4">Building 4</option>
+                </select>
+            </div>
+
+            <!-- Level -->
+            <div class="mb-3">
+                <label for="level" class="form-label">Preferred Floor</label>
+                <select id="level" name="level" class="form-control">
+                    <option value="" disabled selected>Select Preferred Floor</option>
+                    <option value="1">1st Floor</option>
+                    <option value="2">2nd Floor</option>
+                    <option value="3">3rd Floor</option>
+                    <option value="4">4th Floor</option>
+                    <option value="5">5th Floor</option>
+                    <option value="6">6th Floor</option>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+                <button type="reset" class="btn btn-secondary">Reset</button>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+
+        <!-- Applications Results -->
+        {% if applications %}
+            <div class="container mt-5">
+                <h3>Irvine Hall Applications</h3>
+                {% for application in applications %}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                            <!-- Text -->
+                            <div class="col-md-8 d-flex align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ " Application for " ~ application.app_first_name.title() ~ " " ~ application.app_last_name.title() ~ " ("  ~  application.app_student_id ~ ")" }}</h5>
+                                    <p class="card-text">{{ "Application Status: "  ~  application.app_status}}</p>
+                                    <p class="card-text">{{ "Room Type: "  ~  application.room_room_type}}</p>
+                                    <p class="card-text">{{ "Building: "  ~  application.room_building}}</p>
+                                    <p class="card-text">{{ "Floor Level: "  ~  application.room_floor_number}}</p>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <small class="text-muted">Available: {{ application.room_available_rooms }}</small>
+                                        <div>
+                                            <a href="{{ url_for('main.view_application_detail', application_id=application.app_id, room_id=application.app_room_id) }}" class="btn btn-warning">View in Details</a>
+                                            <a href="{{ url_for('main.approve_application', application_id=application.app_id, room_id=application.app_room_id) }}" class="btn btn-success">Approve Application</a>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </div>
+
+
+{% endblock content %}
+
+
+

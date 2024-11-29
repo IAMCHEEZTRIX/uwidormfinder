@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>Login | UWIDormFinder</title>
+<link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+{% endblock head %}
+
+{% block body %}
+<div class="login-card">
+    <h2 class="text-center mb-4">Login to Irvine UWIDormFinder</h2>
+    <form method="POST" action='/login' novalidate>
+        <div class="mb-3">
+            <label for="userID" class="form-label">Username</label>
+            <input type="text" class="form-control" id="userID" name="userID" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+    </form>
+    <p class="text-center mt-3">
+        <a href="{{ url_for('main.create_account') }}" class="text-decoration-none">Create an Account</a> |
+        <a href="{{ url_for('main.forgot_password') }}" class="text-decoration-none">Forgot Password?</a>
+    </p>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-3">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+{% endblock body %}
